@@ -70,7 +70,7 @@ public class Calculator {
                                if (pos != 0)
                                    if(str.charAt(pos-1) == ')' )
                                        return false;
-                               else if(pos != str.length()-1)
+                               if(pos != str.length()-1)
                                        if(str.charAt(pos+1) == '(' )
                                            return false;
                            }
