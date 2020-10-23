@@ -4,7 +4,7 @@ public class Calculator {
     /**
      * выражение, содержащие числа, операторы(+,-,*,/), скобки, пробелы, мусор
      */
-    private String str;
+    private String str = "";
 
     /**
      * удаление пробелов в выражении
@@ -29,12 +29,15 @@ public class Calculator {
         if(str.isEmpty()) return false;
         else{
             delSpace();//удаляем пробелы
-            int open = 0;
-            int close = 0;
+            //смотрим за скобками, если встретили например: ( и )) bracket = -1 это ошибка
+            int bracket = 0;
+
             for(int pos = 0; pos < str.length(); pos++)
             {
-                switch (str.charAt(pos))
+                if(bracket >= 0)
                 {
+                   switch (str.charAt(pos))
+                   {
                        case '+':
                            case '-':
                                case '*':
@@ -47,7 +50,7 @@ public class Calculator {
 
                                        case '(':
                                        {
-                                           open++;
+                                           bracket++;
                                            if(str.charAt(pos+1) == '+' || str.charAt(pos+1) == '-' || str.charAt(pos+1) == '*' || str.charAt(pos+1) == '/' ||  str.charAt(pos+1) == ')')
                                                return false;
                                            else if(pos == str.length() - 1) return false;
@@ -57,7 +60,7 @@ public class Calculator {
 
                                            case ')':
                                            {
-                                               close++;
+                                               bracket--;
                                                if(pos == 0) return false;
                                                else  if(str.charAt(pos-1) == '+' || str.charAt(pos-1) == '-' || str.charAt(pos-1) == '*' || str.charAt(pos-1) == '/' || str.charAt(pos-1) == '(' )
                                                    return false;
@@ -76,8 +79,8 @@ public class Calculator {
                            }
                            else return false;
                    }
+                } else return false;
             }
-            if(close != open) return false;
             return true;
         }
     }
@@ -105,7 +108,7 @@ public class Calculator {
      */
     private boolean postfixNotation() {
 
-        if(!check())
+        if(!check() || str.isEmpty())
             return false;
         else{
             Stack<Character> charstack = new Stack<Character>();
