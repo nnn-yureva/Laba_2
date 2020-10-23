@@ -87,8 +87,7 @@ public class Calculator {
      * @param ch символ
      * @return приоритет символа
      */
-    private int type(char ch) {
-        //самый высокий приоритет
+    private int typeChar(char ch) {
         if (ch == '*' || ch == '/')
             return 3;
         else if (ch == '+' || ch == '-')
@@ -115,7 +114,7 @@ public class Calculator {
             for(int pos = 0; pos < str.length(); pos++)
             {
                 //приоритет оператора
-                int typeoper = type(str.charAt(pos));
+                int typeoper = typeChar(str.charAt(pos));
 
                 if (typeoper == 0) newstr += str.charAt(pos); //не оператор, помещаем в новую строку
                 else if (typeoper == 1) charstack.push(str.charAt(pos)); // если ( , помещаем в стек
@@ -124,7 +123,7 @@ public class Calculator {
                     newstr += ' ';
                     while (!charstack.empty())
                     {
-                        if (type(charstack.peek()) >= typeoper) //если приоритет верх. эл. стека >= текущ.
+                        if (typeChar(charstack.peek()) >= typeoper) //если приоритет верх. эл. стека >= текущ.
                             newstr += charstack.pop();
                         else break;
                     }
@@ -133,7 +132,7 @@ public class Calculator {
                 else if (typeoper == -1)  // если ) , переписываем все до ( в строку
                 {
                     newstr += ' ';
-                    while (type(charstack.peek()) != 1)
+                    while (typeChar(charstack.peek()) != 1)
                         newstr += charstack.pop();
                     charstack.pop();
                 }
@@ -161,9 +160,9 @@ public class Calculator {
                 for(int pos = 0;pos < str.length(); pos++)
                 {
                     if (str.charAt(pos) == ' ') continue;
-                    if (type(str.charAt(pos)) == 0)//число
+                    if (typeChar(str.charAt(pos)) == 0)//число
                     {
-                            while (str.charAt(pos) != ' ' && type(str.charAt(pos)) == 0)
+                            while (str.charAt(pos) != ' ' && typeChar(str.charAt(pos)) == 0)
                             {
                                 res += str.charAt(pos++);
                                 if (pos == str.length()) break;
@@ -171,22 +170,22 @@ public class Calculator {
                             st.push(Double.parseDouble(res));
                             res = "";
                     }
-                    if (type(str.charAt(pos)) > 1)// + - * /
+                    if (typeChar(str.charAt(pos)) > 1)// + - * /
                     {
-                            double curr1 = st.pop();
-                            double curr2 = st.pop();
+                            double num1 = st.pop();
+                            double num2 = st.pop();
 
                             if (str.charAt(pos) == '+')
-                                st.push(curr2 + curr1);
+                                st.push(num2 + num1);
 
                             if (str.charAt(pos) == '-')
-                                st.push(curr2 - curr1);
+                                st.push(num2 - num1);
 
                             if (str.charAt(pos) == '*')
-                                st.push(curr2 * curr1);
+                                st.push(num2 * num1);
 
                             if (str.charAt(pos) == '/')
-                                st.push(curr2 / curr1);
+                                st.push(num2 / num1);
                     }
                 }
                 str = Double.toString(st.pop());
