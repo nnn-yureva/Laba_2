@@ -81,7 +81,8 @@ public class Calculator {
                    }
                 } else return false;
             }
-            return true;
+            if(bracket != 0) return false;
+            else return true;
         }
     }
 
